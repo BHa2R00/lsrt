@@ -14,7 +14,7 @@ module lstx #(
 	output reg [1:0] nst, 
 	output [1:0] cst, 
 	input [CMSB:0] div, 
-	input fclk, 
+	input fclk, sel_fclk, 
 	input signed [DMSB:0] wdata, 
 	output tx, 
 	input rstn, setn, clk 
@@ -27,7 +27,8 @@ localparam [1:0]
 	st_idle		= 2'b00; 
 
 reg [CMSB:0] cnt;
-reg uclk;
+reg uclk_r;
+wire uclk = sel_fclk ? fclk : uclk_r;
 reg [DMSB:0] data;
 wire [DMSB:0] nxt_data = {data[DMSB], data[DMSB:1]};
 assign tx = data[0];
@@ -44,7 +45,7 @@ handshake_xor u_uclk(.x(uclk_x), .i(uclk), .rstn(rstn), .setn(setn), .clk(clk));
 always@(negedge rstn or posedge clk) begin
 	if(~rstn) begin
 		cnt <= {(CMSB+1){1'b0}};
-		uclk <= 1'b0;
+		uclk_r <= 1'b0;
 	end
 	else if(setn) begin
 		case(nst)
@@ -53,14 +54,14 @@ always@(negedge rstn or posedge clk) begin
 				if(fclk_x) begin
 					if(cnt == {(CMSB+1){1'b0}}) begin
 						cnt <= div;
-						uclk <= ~uclk;
+						uclk_r <= ~uclk_r;
 					end
 					else cnt <= cnt - 1;
 				end
 			end
 			default: begin
 				cnt <= cnt;
-				uclk <= uclk;
+				uclk_r <= uclk_r;
 			end
 		endcase
 	end
@@ -126,7 +127,7 @@ module lsrx #(
 	output reg [1:0] nst, 
 	output [1:0] cst, 
 	input [CMSB:0] div, 
-	input fclk, 
+	input fclk, sel_fclk, 
 	output reg signed [DMSB:0] rdata, 
 	input rx, 
 	input rstn, setn, clk 
@@ -139,7 +140,8 @@ localparam [1:0]
 	st_idle		= 2'b00;
 
 reg [CMSB:0] cnt;
-reg uclk;
+reg uclk_r;
+wire uclk = sel_fclk ? fclk : uclk_r;
 reg [DMSB:0] data;
 wire [DMSB:0] nxt_data = {rx, data[DMSB:1]};
 reg [BMSB:0] bth;
@@ -155,7 +157,7 @@ handshake_xor u_uclk(.x(uclk_x), .i(uclk), .rstn(rstn), .setn(setn), .clk(clk));
 always@(negedge rstn or posedge clk) begin
 	if(~rstn) begin
 		cnt <= {(CMSB+1){1'b0}};
-		uclk <= 1'b0;
+		uclk_r <= 1'b0;
 	end
 	else if(setn) begin
 		case(nst)
@@ -164,14 +166,14 @@ always@(negedge rstn or posedge clk) begin
 				if(fclk_x) begin
 					if(cnt == {(CMSB+1){1'b0}}) begin
 						cnt <= div;
-						uclk <= ~uclk;
+						uclk_r <= ~uclk_r;
 					end
 					else cnt <= cnt - 1;
 				end
 			end
 			default: begin
 				cnt <= cnt;
-				uclk <= uclk;
+				uclk_r <= uclk_r;
 			end
 		endcase
 	end
