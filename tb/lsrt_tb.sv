@@ -9,7 +9,7 @@ parameter DMSB = 9;
 parameter CMSB = 12;
 
 reg [CMSB:0] div;
-reg fclk;
+reg fclk, sel_fclk;
 reg rstn, setn, clk;
 
 wire x;
@@ -25,7 +25,7 @@ initial clk = 1'b0;
 always #5 clk = ~clk;
 
 initial fclk = 1'b0;
-always #24 fclk = ~fclk;
+always #42 fclk = ~fclk;
 
 initial rstn = 1'b0;
 initial setn = 1'b0;
@@ -62,6 +62,7 @@ always@(negedge rstn or negedge clk) begin
 		if(u_lstx_empty && u_lsrx_full) begin
 			u_lstx_push <= ~u_lstx_push;
 			div <= $urandom_range(1,(1<<CMSB)-1);
+			sel_fclk = $urandom_range(0, 1);
 		end
 		if(u_lstx_empty_d == 2'b10) begin
 			u_lstx_wdata <= $urandom_range(0,(1<<DMSB)-1);
@@ -81,7 +82,7 @@ lstx #(
 	.nst(), 
 	.cst(), 
 	.div(div), 
-	.fclk(fclk),
+	.fclk(fclk), .sel_fclk(sel_fclk),
 	.wdata(u_lstx_wdata), 
 	.tx(x), 
 	.rstn(rstn), .setn(setn), .clk(clk) 
@@ -98,7 +99,7 @@ lsrx #(
 	.nst(), 
 	.cst(), 
 	.div(div), 
-	.fclk(fclk),
+	.fclk(fclk), .sel_fclk(sel_fclk),
 	.rdata(u_lsrx_rdata), 
 	.rx(x), 
 	.rstn(rstn), .setn(setn), .clk(clk) 
