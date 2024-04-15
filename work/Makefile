@@ -10,3 +10,8 @@ lsrt_uart_tb: ../tb/lsrt_uart_tb.sv
 	rm -rfv lsrt_uart_tb.fsdb
 	${VCS} ../tb/lsrt_uart_tb.sv
 	./a.out 
+
+lsrt_sdm_tb: ../tb/lsrt_sdm_tb.sv
+	rm -rfv lsrt_sdm_tb.fsdb
+	${VCS} ../tb/lsrt_sdm_tb.sv
+	./a.out 
