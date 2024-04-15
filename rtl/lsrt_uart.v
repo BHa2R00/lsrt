@@ -29,7 +29,7 @@ lstx #(
 	.nst(nst), 
 	.cst(cst), 
 	.div(div), 
-	.fclk(fclk),
+	.fclk(fclk), .sel_fclk(1'b0), 
 	.wdata({1'b1, parity, wdata, 1'b0}), 
 	.tx(tx), 
 	.rstn(rstn), .setn(setn), .clk(clk) 
@@ -77,7 +77,7 @@ lsrx #(
 	.nst(nst), 
 	.cst(cst), 
 	.div(div), 
-	.fclk(fclk),
+	.fclk(fclk), .sel_fclk(1'b0), 
 	.rdata(rdata0), 
 	.rx(rx), 
 	.rstn(rstn), .setn(setn), .clk(clk) 
