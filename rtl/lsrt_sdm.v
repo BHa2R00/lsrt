@@ -1,15 +1,12 @@
 `include "../rtl/lsrt.v" 
 
 
-module sdm_tx #(
-	parameter CMSB = 12 
-)(
+module sdm_tx (
 	output empty, 
 	input push, clear, 
 	output xst, 
 	output [1:0] nst, 
 	output [1:0] cst, 
-	input [CMSB:0] div, 
 	input fclk, 
 	input signed [3:0] wdata, 
 	output tx, 
@@ -39,7 +36,7 @@ wire [15:0] weight = weights[$unsigned(wdata)];
 lstx #(
 	. BMSB ( 3 ), 
 	. DMSB ( 15 ), 
-	. CMSB ( CMSB ) 
+	. CMSB ( 2 ) 
 ) u_lstx (
 	.empty(empty), 
 	.push(push), .clear(clear), 
@@ -47,7 +44,7 @@ lstx #(
 	.nst(nst), 
 	.cst(cst), 
 	.uclk(), 
-	.div(div), 
+	.div(3'd7), 
 	.fclk(fclk), .sel_fclk(1'b0), 
 	.wdata(weight), 
 	.tx(tx), 
@@ -57,15 +54,12 @@ lstx #(
 endmodule
 
 
-module sdm_rx #(
-	parameter CMSB = 12 
-)(
+module sdm_rx (
 	output full, 
 	input pop, clear, 
 	output xst, 
 	output [1:0] nst, 
 	output [1:0] cst, 
-	input [CMSB:0] div, 
 	input fclk, 
 	output reg signed [3:0] rdata, 
 	input rx, 
@@ -79,7 +73,7 @@ wire full_01 = {full_d, full} == 3'b011;
 lsrx #(
 	. BMSB ( 3 ), 
 	. DMSB ( 15 ), 
-	. CMSB ( CMSB ) 
+	. CMSB ( 2 ) 
 ) u_lsrx (
 	.full(full), 
 	.pop(pop), .clear(clear), 
@@ -87,7 +81,7 @@ lsrx #(
 	.nst(nst), 
 	.cst(cst), 
 	.uclk(), 
-	.div(div), 
+	.div(3'd7), 
 	.fclk(fclk), .sel_fclk(1'b0),
 	.rdata(rdata0), 
 	.rx(rx), 
