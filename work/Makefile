@@ -5,3 +5,8 @@ lsrt_tb: ../tb/lsrt_tb.sv
 	rm -rfv lsrt_tb.fsdb
 	${VCS} ../tb/lsrt_tb.sv
 	./a.out 
+
+lsrt_uart_tb: ../tb/lsrt_uart_tb.sv
+	rm -rfv lsrt_uart_tb.fsdb
+	${VCS} ../tb/lsrt_uart_tb.sv
+	./a.out 
