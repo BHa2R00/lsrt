@@ -6,9 +6,8 @@ module lsrt_sdm_tb;
 
 parameter BMSB = 3;
 parameter DMSB = 3;
-parameter CMSB = 12;
+parameter CMSB = 2;
 
-reg [CMSB:0] div;
 reg fclk;
 reg rstn, setn, clk;
 
@@ -25,7 +24,7 @@ initial clk = 1'b0;
 always #5 clk = ~clk;
 
 initial fclk = 1'b0;
-always #24 fclk = ~fclk;
+always #43 fclk = ~fclk;
 
 initial rstn = 1'b0;
 initial setn = 1'b0;
@@ -56,12 +55,10 @@ always@(negedge rstn or negedge clk) begin
 		u_sdm_rx_pop <= 1'b0;
 		u_sdm_rx_clear <= 1'b0;
 		u_sdm_tx_wdata <= $urandom_range(0,(1<<DMSB)-1);
-		div <= $urandom_range(5,15);
 	end
 	else begin
 		if(u_sdm_tx_empty && u_sdm_rx_full) begin
 			u_sdm_tx_push <= ~u_sdm_tx_push;
-			div <= $urandom_range(5,10);
 		end
 		if(u_sdm_tx_empty_d == 2'b10) begin
 			u_sdm_tx_wdata <= (1<<(DMSB-1)) * $sin(44.0*$time*3.1415926);
@@ -73,30 +70,24 @@ always@(negedge rstn or negedge clk) begin
 	end
 end
 
-sdm_tx #(
-	. CMSB ( CMSB ) 
-) u_sdm_tx (
+sdm_tx u_sdm_tx (
 	.empty(u_sdm_tx_empty), 
 	.push(u_sdm_tx_push), .clear(u_sdm_tx_clear), 
 	.xst(u_sdm_tx_xst), 
 	.nst(), 
 	.cst(), 
-	.div(div), 
 	.fclk(fclk),
 	.wdata(u_sdm_tx_wdata), 
 	.tx(x), 
 	.rstn(rstn), .setn(setn), .clk(clk) 
 );
 
-sdm_rx #(
-	. CMSB ( CMSB ) 
-) u_sdm_rx (
+sdm_rx u_sdm_rx (
 	.full(u_sdm_rx_full), 
 	.pop(u_sdm_rx_pop), .clear(u_sdm_rx_clear), 
 	.xst(u_sdm_rx_xst), 
 	.nst(), 
 	.cst(), 
-	.div(div), 
 	.fclk(fclk),
 	.rdata(u_sdm_rx_rdata), 
 	.rx(x), 
