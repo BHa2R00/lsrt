@@ -61,7 +61,7 @@ always@(negedge rstn or negedge clk) begin
 			u_sdm_tx_push <= ~u_sdm_tx_push;
 		end
 		if(u_sdm_tx_empty_d == 2'b10) begin
-			u_sdm_tx_wdata <= (1<<(DMSB-1)) * $sin(44.0*$time*3.1415926);
+			u_sdm_tx_wdata <= (1<<(DMSB-1)) * $sin(888.8*$time*3.1415926);
 			u_sdm_rx_pop <= ~u_sdm_rx_pop;
 		end
 		if(u_sdm_rx_full_d == 2'b01) begin
