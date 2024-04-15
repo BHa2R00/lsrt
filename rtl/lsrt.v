@@ -13,6 +13,7 @@ module lstx #(
 	output xst, 
 	output reg [1:0] nst, 
 	output [1:0] cst, 
+	output uclk, 
 	input [CMSB:0] div, 
 	input fclk, sel_fclk, 
 	input signed [DMSB:0] wdata, 
@@ -28,7 +29,7 @@ localparam [1:0]
 
 reg [CMSB:0] cnt;
 reg uclk_r;
-wire uclk = sel_fclk ? fclk : uclk_r;
+assign uclk = sel_fclk ? fclk : uclk_r;
 reg [DMSB:0] data;
 wire [DMSB:0] nxt_data = {data[DMSB], data[DMSB:1]};
 assign tx = data[0];
@@ -126,6 +127,7 @@ module lsrx #(
 	output xst, 
 	output reg [1:0] nst, 
 	output [1:0] cst, 
+	output uclk, 
 	input [CMSB:0] div, 
 	input fclk, sel_fclk, 
 	output reg signed [DMSB:0] rdata, 
@@ -141,7 +143,7 @@ localparam [1:0]
 
 reg [CMSB:0] cnt;
 reg uclk_r;
-wire uclk = sel_fclk ? fclk : uclk_r;
+assign uclk = sel_fclk ? fclk : uclk_r;
 reg [DMSB:0] data;
 wire [DMSB:0] nxt_data = {rx, data[DMSB:1]};
 reg [BMSB:0] bth;
