@@ -6,7 +6,7 @@ module lsrt_sdm_tb;
 
 parameter BMSB = 3;
 parameter DMSB = 3;
-parameter CMSB = 2;
+parameter CMSB = 1;
 
 reg fclk;
 reg rstn, setn, clk;
