@@ -44,7 +44,7 @@ lstx #(
 	.nst(nst), 
 	.cst(cst), 
 	.uclk(), 
-	.div(3'd7), 
+	.div(3'd3), 
 	.fclk(fclk), .sel_fclk(1'b0), 
 	.wdata(weight), 
 	.tx(tx), 
@@ -67,8 +67,8 @@ module sdm_rx (
 );
 
 wire [15:0] rdata0;
-reg [1:0] full_d;
-wire full_01 = {full_d, full} == 3'b011;
+reg [0:0] full_d;
+wire full_01 = {full_d, full} == 2'b01;
 
 lsrx #(
 	. BMSB ( 3 ), 
@@ -81,7 +81,7 @@ lsrx #(
 	.nst(nst), 
 	.cst(cst), 
 	.uclk(), 
-	.div(3'd7), 
+	.div(3'd3), 
 	.fclk(fclk), .sel_fclk(1'b0),
 	.rdata(rdata0), 
 	.rx(rx), 
@@ -89,7 +89,7 @@ lsrx #(
 );
 
 always@(negedge rstn or posedge fclk) begin
-	if(!rstn) full_d <= 2'b00;
+	if(!rstn) full_d <= 1'b0;
 	else full_d <= {full_d[0], full};
 end
 
