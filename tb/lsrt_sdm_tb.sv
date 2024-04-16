@@ -24,7 +24,7 @@ initial clk = 1'b0;
 always #5 clk = ~clk;
 
 initial fclk = 1'b0;
-always #43 fclk = ~fclk;
+always #319 fclk = ~fclk;
 
 initial rstn = 1'b0;
 initial setn = 1'b0;
@@ -61,7 +61,7 @@ always@(negedge rstn or negedge clk) begin
 			u_sdm_tx_push <= ~u_sdm_tx_push;
 		end
 		if(u_sdm_tx_empty_d == 2'b10) begin
-			u_sdm_tx_wdata <= (1<<(DMSB-1)) * $sin(888.8*$time*3.1415926);
+			u_sdm_tx_wdata <= ((1<<DMSB)-1) * $sin(110.0*$time*3.1415926);
 			u_sdm_rx_pop <= ~u_sdm_rx_pop;
 		end
 		if(u_sdm_rx_full_d == 2'b01) begin
