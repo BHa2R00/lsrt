@@ -36,7 +36,7 @@ wire [15:0] weight = weights[$unsigned(wdata)];
 lstx #(
 	. BMSB ( 3 ), 
 	. DMSB ( 15 ), 
-	. CMSB ( 2 ) 
+	. CMSB ( 1 ) 
 ) u_lstx (
 	.empty(empty), 
 	.push(push), .clear(clear), 
@@ -44,7 +44,7 @@ lstx #(
 	.nst(nst), 
 	.cst(cst), 
 	.uclk(), 
-	.div(3'd3), 
+	.div(2'd3), 
 	.fclk(fclk), .sel_fclk(1'b0), 
 	.wdata(weight), 
 	.tx(tx), 
@@ -73,7 +73,7 @@ wire full_01 = {full_d, full} == 2'b01;
 lsrx #(
 	. BMSB ( 3 ), 
 	. DMSB ( 15 ), 
-	. CMSB ( 2 ) 
+	. CMSB ( 1 ) 
 ) u_lsrx (
 	.full(full), 
 	.pop(pop), .clear(clear), 
@@ -81,7 +81,7 @@ lsrx #(
 	.nst(nst), 
 	.cst(cst), 
 	.uclk(), 
-	.div(3'd3), 
+	.div(2'd3), 
 	.fclk(fclk), .sel_fclk(1'b0),
 	.rdata(rdata0), 
 	.rx(rx), 
