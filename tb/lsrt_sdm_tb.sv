@@ -24,7 +24,7 @@ initial clk = 1'b0;
 always #5 clk = ~clk;
 
 initial fclk = 1'b0;
-always #319 fclk = ~fclk;
+always #619 fclk = ~fclk;
 
 initial rstn = 1'b0;
 initial setn = 1'b0;
