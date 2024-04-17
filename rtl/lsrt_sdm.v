@@ -15,28 +15,28 @@ module sdm_tx (
 
 wire [15:0] weights[0:15];
 assign weights[08] = 16'b0000000000000000;
-assign weights[09] = 16'b0000000100000000;
-assign weights[10] = 16'b0000100000100000;
-assign weights[11] = 16'b0001000100010000;
-assign weights[12] = 16'b0010010001001000;
-assign weights[13] = 16'b0100100100100100;
-assign weights[14] = 16'b1001001010010010;
-assign weights[15] = 16'b1001010101010010;
-assign weights[00] = 16'b1010101010101010;
-assign weights[01] = ~weights[15];
-assign weights[02] = ~weights[14];
-assign weights[03] = ~weights[13];
-assign weights[04] = ~weights[12];
-assign weights[05] = ~weights[11];
-assign weights[06] = ~weights[10];
-assign weights[07] = ~weights[09];
+assign weights[09] = 16'b0000000000000001;
+assign weights[10] = 16'b0000000100000001;
+assign weights[11] = 16'b0000100000100001;
+assign weights[12] = 16'b0001000100010001;
+assign weights[13] = 16'b0010010001001001;
+assign weights[14] = 16'b0010100100101001;
+assign weights[15] = 16'b0100101010010101;
+assign weights[00] = 16'b0101010101010101;
+assign weights[01] = (~weights[15] <<1) | (~weights[15]>>15);
+assign weights[02] = (~weights[14] <<1) | (~weights[14]>>15);
+assign weights[03] = (~weights[13] <<1) | (~weights[13]>>15);
+assign weights[04] = (~weights[12] <<1) | (~weights[12]>>15);
+assign weights[05] = (~weights[11] <<1) | (~weights[11]>>15);
+assign weights[06] = (~weights[10] <<1) | (~weights[10]>>15);
+assign weights[07] = (~weights[09] <<1) | (~weights[09]>>15);
 
 wire [15:0] weight = weights[$unsigned(wdata)];
 
 lstx #(
 	. BMSB ( 3 ), 
 	. DMSB ( 15 ), 
-	. CMSB ( 1 ) 
+	. CMSB ( 0 ) 
 ) u_lstx (
 	.empty(empty), 
 	.push(push), .clear(clear), 
@@ -44,8 +44,8 @@ lstx #(
 	.nst(nst), 
 	.cst(cst), 
 	.uclk(), 
-	.div(2'd3), 
-	.fclk(fclk), .sel_fclk(1'b0), 
+	.div(), 
+	.fclk(fclk), .sel_fclk(1'b1), 
 	.wdata(weight), 
 	.tx(tx), 
 	.rstn(rstn), .setn(setn), .clk(clk) 
@@ -66,14 +66,20 @@ module sdm_rx (
 	input rstn, setn, clk 
 );
 
+localparam [1:0]
+	st_cnt		= 2'b10, 
+	st_pop		= 2'b11, 
+	st_clear	= 2'b01, 
+	st_idle		= 2'b00;
+
 wire [15:0] rdata0;
-reg [0:0] full_d;
-wire full_01 = {full_d, full} == 2'b01;
+wire fclk_x;
+handshake_xor u_fclk(.x(fclk_x), .i(fclk), .rstn(rstn), .setn(setn), .clk(clk));
 
 lsrx #(
 	. BMSB ( 3 ), 
 	. DMSB ( 15 ), 
-	. CMSB ( 1 ) 
+	. CMSB ( 0 ) 
 ) u_lsrx (
 	.full(full), 
 	.pop(pop), .clear(clear), 
@@ -81,21 +87,16 @@ lsrx #(
 	.nst(nst), 
 	.cst(cst), 
 	.uclk(), 
-	.div(2'd3), 
-	.fclk(fclk), .sel_fclk(1'b0),
+	.div(), 
+	.fclk(fclk), .sel_fclk(1'b1),
 	.rdata(rdata0), 
 	.rx(rx), 
 	.rstn(rstn), .setn(setn), .clk(clk) 
 );
 
-always@(negedge rstn or posedge fclk) begin
-	if(!rstn) full_d <= 1'b0;
-	else full_d <= {full_d[0], full};
-end
-
-always@(negedge rstn or posedge fclk) begin
+always@(negedge rstn or posedge clk) begin
 	if(!rstn) rdata = 0;
-	else if(full_01) begin
+	else if(fclk_x) begin
 	rdata = -8;
 	if(rdata0[00]) rdata = rdata + 1;
 	if(rdata0[01]) rdata = rdata + 1;
