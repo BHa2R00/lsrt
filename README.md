@@ -11,4 +11,4 @@ uart:
 
 sdm:
 
-![format](https://github.com/BHa2R00/lsrt/blob/main/20240416132554_1286x487_scrot.png)
+![format](https://github.com/BHa2R00/lsrt/blob/main/20240417093002_1286x368_scrot.png)
