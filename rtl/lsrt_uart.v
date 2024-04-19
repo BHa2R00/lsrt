@@ -1,6 +1,3 @@
-`include "../rtl/lsrt.v" 
-
-
 module uart_tx #(
 	parameter CMSB = 12 
 )(
