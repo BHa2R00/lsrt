@@ -1,8 +1,3 @@
-`include "../rtl/tfsm.v" 
-
-// local synchronous transfer and receive 
-
-
 module lstx #(
 	parameter BMSB = 3, 
 	parameter DMSB = 9, 
@@ -151,7 +146,7 @@ wire end_bth = bth == {(BMSB+1){1'b0}};
 assign full = (cst == st_idle);
 
 wire pop_x, clear_x, fclk_x, uclk_x;
-handshake_xor u_push(.x(pop_x), .i(pop), .rstn(rstn), .setn(setn), .clk(clk));
+handshake_xor u_pop(.x(pop_x), .i(pop), .rstn(rstn), .setn(setn), .clk(clk));
 handshake_xor u_clear(.x(clear_x), .i(clear), .rstn(rstn), .setn(setn), .clk(clk));
 handshake_xor u_fclk(.x(fclk_x), .i(fclk), .rstn(rstn), .setn(setn), .clk(clk));
 handshake_xor u_uclk(.x(uclk_x), .i(uclk), .rstn(rstn), .setn(setn), .clk(clk));
