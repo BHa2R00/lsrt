@@ -1,3 +1,6 @@
+
+`include "../rtl/tfsm.v" 
+`include "../rtl/lsrt.v" 
 `include "../rtl/lsrt_uart.v"
 
 `timescale 1ns/1ns
@@ -66,14 +69,12 @@ always@(negedge rstn or negedge clk) begin
 			u_uart_tx_push <= ~u_uart_tx_push;
 			div <= $urandom_range(1,(1<<CMSB)-1);
 		end
-		fork
 		if(u_uart_tx_empty_d == 2'b10) begin
 			u_uart_tx_wdata <= $fgetc(fp);
 		end
 		if(u_uart_rx_full_d == 2'b01) begin
 			$write("%c", u_uart_rx_rdata);
 		end
-		join_any
 	end
 end
 
