@@ -1,6 +1,3 @@
-`include "../rtl/lsrt.v" 
-
-
 module sdm_tx (
 	output empty, 
 	input push, clear, 
@@ -96,7 +93,8 @@ lsrx #(
 
 always@(negedge rstn or posedge clk) begin
 	if(!rstn) rdata = 0;
-	else if(fclk_x) begin
+	else if(setn) begin
+	if(fclk_x) begin
 	rdata = -8;
 	if(rdata0[00]) rdata = rdata + 1;
 	if(rdata0[01]) rdata = rdata + 1;
@@ -114,6 +112,7 @@ always@(negedge rstn or posedge clk) begin
 	if(rdata0[13]) rdata = rdata + 1;
 	if(rdata0[14]) rdata = rdata + 1;
 	if(rdata0[15]) rdata = rdata + 1;
+	end
 	end
 end
 
