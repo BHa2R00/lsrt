@@ -1,3 +1,5 @@
+
+`include "../rtl/tfsm.v"
 `include "../rtl/lsrt.v"
 
 `timescale 1ns/1ns
