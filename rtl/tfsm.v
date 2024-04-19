@@ -6,6 +6,13 @@ module handshake_xor (
 
 reg d, q;
 
+`ifdef FPGA 
+always@(*) d = i;
+always@(negedge rstn or posedge clk) begin
+	if(!rstn) q <= 1'b0;
+	else q <= d;
+end
+`else
 always@(*) begin
 	if(~rstn) d = 1'b0;
 	if(~setn) d = i;
@@ -17,6 +24,7 @@ always@(*) begin
 	else if(~setn) q = i;
 	else if(clk) q = d;
 end
+`endif
 
 assign x = d ^ q;
 
@@ -35,6 +43,13 @@ module state_xor #(
 
 reg [STMSB:0] lst;
 
+`ifdef FPGA
+always@(*) lst = nst;
+always@(negedge rstn or posedge clk) begin
+	if(!rstn) cst <= ST0;
+	else if(setn) cst <= nst;
+end
+`else
 always@(*) begin
 	if(~rstn) lst = ST0;
 	else if(setn && ~clk) lst = nst;
@@ -44,6 +59,7 @@ always@(*) begin
 	if(~rstn) cst = ST0;
 	else if(setn && clk) cst = lst;
 end
+`endif
 
 assign xst = lst != cst;
 
