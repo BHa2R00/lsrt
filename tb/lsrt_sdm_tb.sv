@@ -1,3 +1,6 @@
+
+`include "../rtl/tfsm.v" 
+`include "../rtl/lsrt.v" 
 `include "../rtl/lsrt_sdm.v"
 
 `timescale 1ns/1ns
@@ -54,7 +57,7 @@ always@(negedge rstn or negedge clk) begin
 		u_sdm_tx_clear <= 1'b0;
 		u_sdm_rx_pop <= 1'b0;
 		u_sdm_rx_clear <= 1'b0;
-		u_sdm_tx_wdata <= $urandom_range(0,(1<<DMSB)-1);
+		u_sdm_tx_wdata <= 0;
 	end
 	else begin
 		if(u_sdm_tx_empty && u_sdm_rx_full) begin
