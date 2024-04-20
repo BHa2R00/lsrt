@@ -89,6 +89,7 @@ uart_tx #(
 	.div(div), 
 	.fclk(fclk),
 	.wdata(u_uart_tx_wdata), 
+	.tx_clk(), 
 	.tx(x), 
 	.rstn(rstn), .setn(setn), .clk(clk) 
 );
@@ -104,6 +105,7 @@ uart_rx #(
 	.div(div), 
 	.fclk(fclk),
 	.rdata(u_uart_rx_rdata), 
+	.rx_clk(), 
 	.rx(x), 
 	.rstn(rstn), .setn(setn), .clk(clk) 
 );
