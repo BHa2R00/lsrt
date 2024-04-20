@@ -6,7 +6,7 @@ local synchronous transfer and receive
 
 uart:
 
-![format](https://github.com/BHa2R00/lsrt/blob/main/20240415124836_1284x219_scrot.png)
+![format](https://github.com/BHa2R00/lsrt/blob/main/20240420135835_1285x300_scrot.png)
 
 
 sdm:
