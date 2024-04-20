@@ -9,6 +9,7 @@ module uart_tx #(
 	input [CMSB:0] div, 
 	input fclk, 
 	input [7:0] wdata, 
+	output tx_clk, 
 	output tx, 
 	input rstn, setn, clk 
 );
@@ -25,7 +26,7 @@ lstx #(
 	.xst(xst), 
 	.nst(nst), 
 	.cst(cst), 
-	.uclk(), 
+	.uclk(tx_clk), 
 	.div(div), 
 	.fclk(fclk), .sel_fclk(1'b0), 
 	.wdata({1'b1, parity, wdata, 1'b0}), 
@@ -48,6 +49,7 @@ module uart_rx #(
 	input fclk, 
 	output rxerr, 
 	output reg [7:0] rdata, 
+	output rx_clk, 
 	input rx, 
 	input rstn, setn, clk 
 );
@@ -74,7 +76,7 @@ lsrx #(
 	.xst(xst), 
 	.nst(nst), 
 	.cst(cst), 
-	.uclk(), 
+	.uclk(rx_clk), 
 	.div(div), 
 	.fclk(fclk), .sel_fclk(1'b0), 
 	.rdata(rdata0), 
